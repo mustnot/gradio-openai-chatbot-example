@@ -15,6 +15,7 @@ def generate_messages(messages: list):
         result.append([messages[index]["content"], messages[index+1]["content"]])
     return result
 
+
 def answer(input, history=[]):
     history.append(
         {"role": "user", "content": input}
@@ -33,15 +34,20 @@ def answer(input, history=[]):
     return messages, history
 
 
+def reset(chatbot, state):
+    return [], []
+
+
 with gr.Blocks() as app:
-    chatbot = gr.Chatbot()
     state = gr.State([])
+    chatbot = gr.Chatbot()
+    
+    textbox = gr.TextArea(show_label=False, placeholder="질문을 해주세요.").style(container=False)
+    reset_button = gr.Button(value="초기화")
 
-    with gr.Row():
-        txt = gr.Textbox(show_label=False, placeholder="질문을 해주세요.").style(container=False)
+    textbox.submit(answer, [textbox, state], [chatbot, state])
+    reset_button.click(reset, [chatbot, state], [chatbot, state])
 
-    txt.submit(answer, [txt, state], [chatbot, state])
-            
 
 if __name__ == "__main__":
     app.launch()
