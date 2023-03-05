@@ -42,7 +42,7 @@ with gr.Blocks() as app:
     state = gr.State([])
     chatbot = gr.Chatbot()
     
-    textbox = gr.TextArea(show_label=False, placeholder="질문을 해주세요.").style(container=False)
+    textbox = gr.Textbox(show_label=False, placeholder="질문을 해주세요.").style(container=False)
     reset_button = gr.Button(value="초기화")
 
     textbox.submit(answer, [textbox, state], [chatbot, state])
